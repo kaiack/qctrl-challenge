@@ -34,7 +34,7 @@ def test_unit_conversion(client):
     # Loop through, check all units were converted and converted quantities are correct
     for i in range(len(ingredients_metric)):
         assert(ingredients_converted[i]['unit'] in ['lb', 'floz']) 
-        
+
         if ingredients_metric[i]["unit"] == "g":
             assert(round(ingredients_metric[i]["quantity"] / LB_TO_G, 2) == ingredients_converted[i]['quantity'])
         else:
@@ -42,7 +42,17 @@ def test_unit_conversion(client):
 
 
 def test_serving_sizes(client):
-    pass
+    response = client.get('/recipe?title=Pancakes')
+    ingredients_single = json.loads(response.data)
+
+    response2 = client.get('/recipe?title=Pancakes&servings=4')
+    ingredients_quadruple = json.loads(response2.data)
+
+    # Check all ingredients are 4x larger.
+    assert(len(ingredients_single) == len(ingredients_quadruple))
+
+    for i in range(len(ingredients_single)):
+        assert(ingredients_single[i]['quantity'] * 4 == ingredients_quadruple[i]['quantity'])
 
 def test_invalid_title(client):
     pass
