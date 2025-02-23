@@ -11,7 +11,7 @@
     ],
     "Chicken Stir-Fry": [
         { "name": "Chicken Breast", "unit": "g", "quantity": 150 },
-        { "name": "Bell Pepper", "unit": "g", "quantity": 50 },
+        { "name": "Red Capscicum", "unit": "g", "quantity": 50 },
         { "name": "Snow Peas", "unit": "g", "quantity": 50 },
         { "name": "Carrot", "unit": "g", "quantity": 40 },
         { "name": "Soy Sauce", "unit": "ml", "quantity": 20 },
