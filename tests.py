@@ -55,11 +55,26 @@ def test_serving_sizes(client):
         assert(ingredients_single[i]['quantity'] * 4 == ingredients_quadruple[i]['quantity'])
 
 def test_invalid_title(client):
-    pass
+    response = client.get('/recipe?title=pizza')
+    assert(response.status_code == 400)
+    assert(response.data.decode('utf-8') == "Recipe not found")
 
-def test_invalid_units(client):
-    pass
+def test_invalid_params(client):
+    response = client.get('/recipe?title=Pancakes&mass=K')
+    assert(response.status_code == 400)
+    assert(response.data.decode('utf-8') == "Please specify valid units for mass and/or volume")
 
-def test_invalid_servings(client):
-    pass
+    response = client.get('/recipe?title=Pancakes&volume=L')
+    assert(response.status_code == 400)
+    assert(response.data.decode('utf-8') == "Please specify valid units for mass and/or volume")
+
+    response = client.get('/recipe?title=Pancakes&servings=0')
+    assert(response.status_code == 400)
+    assert(response.data.decode('utf-8') == "Servings should be a positive integer")
+
+    response = client.get('/recipe?title=Pancakes&servings=-1')
+    assert(response.status_code == 400)
+    assert(response.data.decode('utf-8') == "Servings should be a positive integer")
+
+    
 
