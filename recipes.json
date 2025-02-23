@@ -1,6 +1,30 @@
 {
     "Penne" : [{ "name": "Penne", "unit" : "g", "quantity" : 200 }],
-    "Rigatoni" : [{ "name": "Rigatoni", "unit" : "g", "quantity" : 200 }],
-    "Fetuccine" : [{ "name": "Fetuccine", "unit" : "g", "quantity" : 200 }],
-    "Linguine" : [{ "name": "Linguine", "unit" : "g", "quantity" : 200 }]
+    "Linguine" : [{ "name": "Linguine", "unit" : "g", "quantity" : 200 }],
+    "Penne Arrabbiata": [
+        { "name": "Penne", "unit": "g", "quantity": 100 },
+        { "name": "Tomato Sauce", "unit": "ml", "quantity": 60 },
+        { "name": "Garlic", "unit": "g", "quantity": 5 },   
+        { "name": "Chili Flakes", "unit": "g", "quantity": 1 },
+        { "name": "Olive Oil", "unit": "ml", "quantity": 15 },
+        { "name": "Parsley", "unit": "g", "quantity": 5 }
+    ],
+    "Chicken Stir-Fry": [
+        { "name": "Chicken Breast", "unit": "g", "quantity": 150 },
+        { "name": "Bell Pepper", "unit": "g", "quantity": 50 },
+        { "name": "Snow Peas", "unit": "g", "quantity": 50 },
+        { "name": "Carrot", "unit": "g", "quantity": 40 },
+        { "name": "Soy Sauce", "unit": "ml", "quantity": 20 },
+        { "name": "Olive Oil", "unit": "ml", "quantity": 15 },
+        { "name": "Garlic", "unit": "g", "quantity": 5 }
+    ],
+    "Pancakes": [
+        { "name": "Flour", "unit": "g", "quantity": 50 },
+        { "name": "Milk", "unit": "ml", "quantity": 60 },
+        { "name": "Egg", "unit": "g", "quantity": 50 },
+        { "name": "Butter", "unit": "g", "quantity": 20 },
+        { "name": "Sugar", "unit": "g", "quantity": 10 },
+        { "name": "Baking Powder", "unit": "g", "quantity": 2 },
+        { "name": "Vanilla Extract", "unit": "ml", "quantity": 5 }
+    ]
 }
