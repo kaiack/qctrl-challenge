@@ -5,30 +5,36 @@ import json
 DEFAULT_MASS_UNIT="g"
 DEFAULT_VOLUME_UNIT="ml"
 DEFAULT_SERVING_SIZE="1"
-DECIMAL_PLACES = 2
-DB_FILE = ""
+DECIMAL_PLACES = 2 # Decimal places to round quantities to.
+DB_FILE = "recipes.json"
 
 # https://en.wikibooks.org/wiki/Cookbook:Units_of_measurement
 
 # For converting grams to other units
 mass_conversions = {
     "g" : 1,
-    "lb" : 450
+    "lb" : 450,
+    "oz" : 28
 }
 
 # For converting ml to other units
 volume_conversions = {
     "ml" : 1,
-    "floz": 340
+    "floz": 340,
+    "tbsp" : 15
 }
 
+# This is usually created in a factory function so that runtime config
+# can be set like testing vs production databases or debugging mode etc.
+
+# In this case, I kept it simple.
 app = Flask(__name__)
 
 '''
 Open recipes json file and return the titles of all the recipes
 '''
 def listRecipes() -> List[str]:
-    with open('recipes.json') as f:
+    with open(DB_FILE) as f:
         recipes = json.load(f)
         return list(recipes.keys())
 
@@ -38,21 +44,25 @@ Returns a list of ingredients with converted units and scaled servings.
 '''
 def fetchRecipe(title:str, mass_unit:str, volume_unit:str, servings:int) -> List[Dict[str, str | int]]:
 
-    with open('recipes.json') as f:
+    with open(DB_FILE) as f:
         recipes = json.load(f)
         recipe = recipes[title]
 
         # Convert from grams/ml to specified mass/volume unit.
         for ingredient in recipe:
-            if ingredient['unit'] == "g":
+            # Scale up values based on servings before unit conversion 
+            #   -> more accurate as scaling after would multiply the rounding inaccuracies.
+            if servings != 1: 
+                ingredient["quantity"] *= servings
+
+            # don't convert if the mass unit is the same as default, likewise for volume.
+            if mass_unit != DEFAULT_MASS_UNIT and ingredient['unit'] == DEFAULT_MASS_UNIT:
                 ingredient['quantity'] = round(ingredient['quantity'] / mass_conversions[mass_unit], DECIMAL_PLACES)
                 ingredient['unit'] = mass_unit
-            else:
+            elif volume_unit != DEFAULT_VOLUME_UNIT and ingredient['unit'] == DEFAULT_VOLUME_UNIT:
                 ingredient['quantity'] = round(ingredient['quantity'] / volume_conversions[volume_unit], DECIMAL_PLACES)
                 ingredient['unit'] = volume_unit
             
-            # Scale up values based on servings
-            ingredient["quantity"] *= servings
 
     return recipe
 
@@ -67,7 +77,7 @@ def validate_recipe_params(mass_unit:str, volume_unit:str, servings:str) -> Tupl
     if mass_unit not in mass_conversions or volume_unit not in volume_conversions:
         return False, "Please specify valid units for mass and/or volume"
     
-    # Validate that servings is a positive integer
+    # Validate that servings is a positive integer, isdigit returns false when its a float, negative or not a number.
     if not servings.isdigit() or int(servings) <= 0:
         return False, "Servings should be a positive integer"
     
